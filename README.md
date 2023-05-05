@@ -1,8 +1,6 @@
 # MOTMAT893_BCL2302_GROUP_Elzab-_MothusiMathuloe_IWA19
 📚 Webapp to be audited as part of final assessment for first JS module
 
-Certainly! Here's a template for a `README.md` file that you can use to document your book app:
-
 # Book App
 
 Welcome to the Book App! This is a web application built with Javascript, HTML, and CSS that allows users to discover new books, view book previews, and filter books by author and genre. The app also features a dark mode for comfortable reading at night.
