@@ -127,8 +127,6 @@ settingsOverlay.addEventListener('submit', (event) => {
   settingsOverlay.open = false;
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 listBtn.innerText = `Show more (${books.length - [page * BOOKS_PER_PAGE]})`
@@ -294,7 +292,7 @@ const div = document.querySelector('.header__logo');
   });
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 items.addEventListener('click', (event) => {
