@@ -26,22 +26,6 @@ The Book App was built using the following technologies:
 - VSCode
 - Git
 
-## Installation
-
-To run the Book App locally, follow these steps:
-
-1. Clone the repository using Git:
-
-   ```
-   git clone https://github.com/<username>/<repository-name>.git
-   ```
-
-2. Open the project in your code editor of choice (e.g. VSCode)
-
-3. Open `index.html` in your web browser
-
-4. Explore the app and discover new books to read!
-
 ## Credits
 
 The Book App was created by Mothusi Mathuloe.
