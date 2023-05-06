@@ -1,8 +1,15 @@
+// Import necessary data from data.js file
+
 import {authors, books, genres, BOOKS_PER_PAGE} from './data.js'
+
+// Set initial values for matches, page, and range
 
 let matches = books;
 let page = 1;
 let range = [0, 36];
+
+// DOM elements that I will need to use
+
 const items = document.querySelector('[data-list-items]')
 const searchCancel = document.querySelector('[data-search-cancel]')
 const settingsCancel = document.querySelector('[data-settings-cancel]')
@@ -14,7 +21,7 @@ const listBtn = document.querySelector('[data-list-button]')
 const searchOverlay = document.querySelector('[data-search-overlay]')
 const settingsOverlay = document.querySelector('[data-settings-overlay]')
 const settingsTheme = document.querySelector('[data-settings-theme]')
-const searchFormBtn = document.querySelector('[form="search"]')
+// const searchFormBtn = document.querySelector('[form="search"]')
 const searchTitle = document.querySelector('[data-search-title]')
 const searchAuthor = document.querySelector('[data-search-authors]')
 const searchGenre = document.querySelector('[data-search-genres]')
@@ -26,8 +33,12 @@ const listBlur = document.querySelector('[data-list-blur]')
 const listImage = document.querySelector('[data-list-image]')
 const searchForm = document.querySelector('[data-search-form]')
 
+// For an eeror to be thrown if matches or range is not valid
+
 if (!matches || !Array.isArray(matches)) throw new Error('Source required');
 if (!range || range.length < 2) throw new Error('Range must be an array with two numbers');
+
+// Set theme for day and night modes
 
 const css = {
   day: {
@@ -37,9 +48,10 @@ const css = {
   night: {
     dark: '255, 255, 255',
     light: '10, 10 ,20'
-  }
-};
+}};
 
+
+// Function to create a preview button element
 
 const createPreview = ({ author, id, image, title }) => {
     const preview = document.createElement('button');
@@ -50,17 +62,20 @@ const createPreview = ({ author, id, image, title }) => {
       <img class="preview__image" src="${image}" alt="${title}">
       <div class="preview__content">
         <h2 class="preview__title">${title}</h2>
-        <h3 class="preview__author">${author}</h3>
+        <h3 class="preview__author">${authors[author]}</h3>
       </div>
     `;
   
     return preview;
-  };
+};
   
-  let fragment = document.createDocumentFragment();
-  let extracted = matches.slice(range[0], range[1]);
+
+// Create fragments to hold preview elements
+
+let fragment = document.createDocumentFragment();
+let extracted = matches.slice(range[0], range[1]);
   
-  for (const { author, image, title, id } of extracted) {
+for (const { author, image, title, id } of extracted) {
     const preview = createPreview({
       author,
       id,
@@ -69,9 +84,11 @@ const createPreview = ({ author, id, image, title }) => {
     });
   
     fragment.appendChild(preview);
-  }
+ }
 
+ items.append(fragment)
 
+// Create a fragment to hold genre option elements
 
 const genresFragment = document.createDocumentFragment()
 let element = document.createElement('option')
@@ -88,6 +105,8 @@ for (const [id, name] of Object.entries(genres)) {
 
 searchGenre.appendChild(genresFragment)
 
+// Create a fragment to hold authors option elements
+
 const authorsFragment = document.createDocumentFragment()
 let element2 = document.createElement('option')
 element2.value = 'any'
@@ -103,7 +122,7 @@ for (const [id, name] of Object.entries(authors)) {
 
 searchAuthor.appendChild(authorsFragment)
 
-
+// Determine whether to set the theme to "night" or "day" based on the user's preferences
 
 settingsTheme.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
 const v = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
@@ -127,15 +146,18 @@ settingsOverlay.addEventListener('submit', (event) => {
   settingsOverlay.open = false;
 });
 
-
+// Set the text content of the "Show more" button
 
 listBtn.innerText = `Show more (${books.length - [page * BOOKS_PER_PAGE]})`
+
+// Set the HTML content of the "Show more" button with a remaining count
 
 listBtn.innerHTML = /* html */ [
     `<span>Show more</span>
     <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>`,
 ]
 
+// Handle the "Show more" button click
 
 listBtn.addEventListener('click', () => {
   const startIndex = page * BOOKS_PER_PAGE;
@@ -170,7 +192,7 @@ listBtn.addEventListener('click', () => {
   listBtn.textContent = `Show more (${remaining})`;
 });
 
-
+// Handle the submission of the search form
 
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -228,45 +250,15 @@ searchForm.addEventListener('submit', (event) => {
 
 });
 
-fragment = document.createDocumentFragment()
-extracted = books.slice(0, 36)
-    
-for (const { author, image, title, id } of extracted) {
-  //const { author: authorId, id, image, title } = props
-        
-  const element = document.createElement('button')
-  element.classList = 'preview'
-  element.setAttribute('data-preview', id)
-  
-  element.innerHTML = /* html */ `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-        fragment.appendChild(element)
-    }
-    
-  items.appendChild(fragment)
-
-
-
-
-
+// Add an event listener to the logo element
 
 const div = document.querySelector('.header__logo');
 
   div.addEventListener('click', () => {
-    // searchForm.reset(); // clear the search filters
+    
     items.innerHTML = ''; // reset the search results to the default list
     listBtn.disabled = false
     for (const { author, image, title, id } of extracted) {
-      //const { author: authorId, id, image, title } = props
             
       const element = document.createElement('button')
       element.classList = 'preview'
@@ -283,18 +275,15 @@ const div = document.querySelector('.header__logo');
                     <div class="preview__author">${authors[author]}</div>
                 </div>
             `
-            fragment.appendChild(element)
+      fragment.appendChild(element)
             
-        }
+    }
 
-        items.appendChild(fragment)
+  items.appendChild(fragment)
         
-  });
+});
 
-
-
-
-
+// Add an event listener to the items element
 items.addEventListener('click', (event) => {
   listActive.open = true;
 
@@ -304,7 +293,7 @@ items.addEventListener('click', (event) => {
   for (const node of pathArray) {
     if (active) break;
     const previewId = node?.dataset?.preview;
-    console.log(previewId)
+   
     for (const singleBook of matches) {
       if (singleBook.id === previewId) {
         active = singleBook;
@@ -321,6 +310,7 @@ items.addEventListener('click', (event) => {
   listDescription.textContent = active.description;
 });
 
+// 
 
 listClose.addEventListener('click', (event)=>{
 
@@ -328,9 +318,7 @@ listClose.addEventListener('click', (event)=>{
 
 })
 
-
-
-// Listeners
+// Event listeners
 
 searchCancel.addEventListener('click', () => { searchOverlay.open = false })
 settingsCancel.addEventListener('click', () => { settingsOverlay.open = false })
